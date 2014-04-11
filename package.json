@@ -1,0 +1,47 @@
+{
+  "name": "fixtures-fs",
+  "version": "1.0.0",
+  "description": "Create a temporary fs with JSON fixtures",
+  "keywords": [],
+  "author": "Raynos <raynos2@gmail.com>",
+  "repository": "git://github.com/uber/fixtures-fs.git",
+  "main": "index",
+  "homepage": "https://github.com/uber/fixtures-fs",
+  "bugs": {
+    "url": "https://github.com/uber/fixtures-fs/issues",
+    "email": "raynos2@gmail.com"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "tape": "^2.12.3",
+    "jshint": "^2.5.0",
+    "istanbul": "^0.2.7",
+    "tap-spec": "^0.1.8",
+    "pre-commit": "0.0.5",
+    "run-browser": "Raynos/run-browser#v1.2.0-phantom"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://github.com/uber/fixtures-fs/raw/master/LICENSE"
+  }],
+  "scripts": {
+    "test": "npm run jshint --silent && npm run unit-test --silent",
+    "unit-test": "NODE_ENV=test node test/index.js | tap-spec",
+    "jshint-pre-commit": "jshint --verbose $(git diff --cached --name-only | grep '\\.js$')",
+    "jshint": "jshint --verbose .",
+    "cover": "istanbul cover --report none --print detail test/index.js",
+    "view-cover": "istanbul report html && open ./coverage/index.html",
+    "browser": "run-browser test/index.js",
+    "phantom": "run-browser test/index.js -b"
+  },
+  "engine": {
+    "node": ">= 0.8.x"
+  },
+  "pre-commit": [
+    "jshint-pre-commit",
+    "unit-test"
+  ],
+  "private": true,
+  "uber-ngen-version": "3.2.6"
+}
