@@ -10,7 +10,7 @@ type FsMock := {
 
 type Fixture := Object<String, String | Fixture>
 
-type Task<T> := Callback<Error, T> | Object & {
+type EndCallback<T> := Callback<Error, T> | Object & {
     end: Callback<Error, T>
 }
 
@@ -32,14 +32,14 @@ fixtures-fs :=
     (
         dirname: String,
         fixtures: Fixture, 
-        lambda: (Task<T>) => void,
+        lambda: (EndCallback<T>) => void,
         opts?: FsMock,
-        task: Task<T>
+        task: EndCallback<T>
     ) => void &
     (
         dirname: String,
         fixtures: Fixture, 
-        lambda: (Task<T>) => void,
+        lambda: (EndCallback<T>) => void,
         opts?: FsMock
-    ) => (Task<T>) => void
+    ) => (EndCallback<T>) => void
     
