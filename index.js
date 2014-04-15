@@ -9,22 +9,27 @@ function isTask(maybeTask) {
     );
 }
 
-function interceptTask(task, thunk) {
-    var callback;
+/*   we take the `callback` or object with `.end()` method passed
+     to the result of `withFixtures` and intercept such that
+     we can apply our async teardown logic before invoking
+     the done callback
+*/
+function interceptTask(task, asyncTeardown) {
+    var doneCallback;
 
     function interceptCallback(err, value) {
         function onTeardown(newErr) {
-            callback(err || newErr, value);
+            doneCallback(err || newErr, value);
         }
 
-        thunk(onTeardown);
+        asyncTeardown(onTeardown);
     }
 
     if (typeof task === 'function') {
-        callback = task;
+        doneCallback = task;
         return interceptCallback;
     } else {
-        callback = task.end.bind(task);
+        doneCallback = task.end.bind(task);
         task.end = interceptCallback;
         return task;
     }
