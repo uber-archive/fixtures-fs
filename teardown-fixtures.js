@@ -3,6 +3,7 @@ var path = require('path');
 var parallel = require('continuable-para');
 var series = require('continuable-series');
 var globalRimRaf = require('rimraf');
+var format = require('util').format;
 
 function teardownFixtures(dirname, fixtures, opts, callback) {
     if (typeof opts === 'function') {
@@ -24,6 +25,9 @@ function teardownFixtures(dirname, fixtures, opts, callback) {
                 teardownFixtures.bind(null, loc, value, opts),
                 rimraf.bind(null, loc)
             ]);
+        } else {
+            var msg = format('value not supported %j', value);
+            throw new Error(msg);
         }
     });
 
