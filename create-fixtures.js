@@ -25,7 +25,6 @@ function createFixtures(dirname, fixtures, opts, callback) {
                 createFixtures.bind(null, loc, value, opts)
             ]);
         } else {
-            console.log('throwing lol');
             var msg = format('value not supported %j', value);
             throw new Error(msg);
         }
