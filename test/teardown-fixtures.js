@@ -24,6 +24,7 @@ function createFs() {
 
         process.nextTick(cb);
     };
+    fs.fs = fs;
     return fs;
 }
 
@@ -41,7 +42,7 @@ test('removes single file', function (assert) {
 
     teardownFixtures(__dirname, {
         'foo': 'bar'
-    }, { fs: fs, rimraf: fs.rimraf }, function (err) {
+    }, fs, function (err) {
         assert.ifError(err);
 
         assert.equal(fs.existsSync(FOO_PATH), false);
@@ -61,7 +62,7 @@ test('removes multiple files', function (assert) {
     teardownFixtures(__dirname, {
         'foo': 'bar',
         'bar': 'baz'
-    }, { fs: fs, rimraf: fs.rimraf }, function (err) {
+    }, fs, function (err) {
         assert.ifError(err);
 
         assert.equal(fs.existsSync(FOO_PATH), false);
@@ -85,7 +86,7 @@ test('removes folders', function (assert) {
         'bar': {
             'baz': 'foobar'
         }
-    }, { fs: fs, rimraf: fs.rimraf }, function (err) {
+    }, fs, function (err) {
         assert.ifError(err);
 
         assert.equal(fs.existsSync(FOO_PATH), false);
@@ -112,7 +113,7 @@ test('cleanups other files', function (assert) {
         'bar': {
             'baz': 'foobar'
         }
-    }, { fs: fs, rimraf: fs.rimraf }, function (err) {
+    }, fs, function (err) {
         assert.ifError(err);
 
         assert.equal(fs.existsSync(FOO_PATH), false);
@@ -122,4 +123,41 @@ test('cleanups other files', function (assert) {
 
         assert.end();
     });
+});
+
+test('errors if file does not exist', function (assert) {
+    var fs = createFs();
+    fs.file(BAZ_PATH, 'foobar');
+    fs.file(GIT_PATH, 'some git stuff');
+
+    teardownFixtures(__dirname, {
+        'foo': 'bar',
+        'bar': {
+            'baz': 'foobar'
+        }
+    }, fs, function (err) {
+        assert.ok(err);
+
+        assert.equal(err.code, 'ENOENT');
+
+        assert.end();
+    });
+});
+
+
+test('throws on invalid data structures', function (assert) {
+    var fs = createFs();
+    var counter = 0;
+
+    assert.throws(function () {
+        teardownFixtures(__dirname, {
+            foo: 42
+        }, fs, function () {
+            counter++;
+        });
+    }, /value not supported 42/);
+
+    assert.equal(counter, 0);
+
+    assert.end();
 });

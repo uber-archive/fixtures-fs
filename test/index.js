@@ -1,2 +1,2 @@
-require('./create-fixtures.js');
-require('./with-fixtures.js');
+require('./unit.js');
+require('./integration.js');

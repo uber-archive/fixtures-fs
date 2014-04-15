@@ -11,9 +11,12 @@ var BAZ_PATH = path.join(__dirname, 'bar', 'baz');
 function createFs() {
     var fs = new FakeFs();
     fs.mkdirp = function (dirname, cb) {
-        fs.dir(dirname);
+        if (!fs.existsSync(dirname)) {
+            fs.dir(dirname);
+        }
         process.nextTick(cb);
     };
+    fs.fs = fs;
     return fs;
 }
 
@@ -28,7 +31,7 @@ test('create single file', function (assert) {
 
     createFixtures(__dirname, {
         'foo': 'bar'
-    }, { fs: fs, mkdirp: fs.mkdirp }, function (err) {
+    }, fs, function (err) {
         assert.ifError(err);
 
         assert.equal(fs.readFileSync(FOO_PATH, 'utf8'), 'bar');
@@ -43,7 +46,7 @@ test('create multiple files', function (assert) {
     createFixtures(__dirname, {
         'foo': 'bar',
         'bar': 'baz'
-    }, { fs: fs, mkdirp: fs.mkdirp }, function (err) {
+    }, fs, function (err) {
         assert.ifError(err);
 
         assert.equal(fs.readFileSync(FOO_PATH, 'utf8'), 'bar');
@@ -61,7 +64,7 @@ test('create folders', function (assert) {
         'bar': {
             'baz': 'foobar'
         }
-    }, { fs: fs, mkdirp: fs.mkdirp }, function (err) {
+    }, fs, function (err) {
         assert.ifError(err);
 
         assert.equal(fs.readFileSync(FOO_PATH, 'utf8'), 'bar');
@@ -72,3 +75,38 @@ test('create folders', function (assert) {
     });
 });
 
+test('error if folder exists', function (assert) {
+    var fs = createFs();
+
+    fs.dir(BAR_PATH);
+
+    createFixtures(__dirname, {
+        'foo': 'bar',
+        'bar': {
+            'baz': 'foobar'
+        }
+    }, fs, function (err) {
+        assert.ok(err);
+
+        assert.equal(err.code, 'EEXIST');
+
+        assert.end();
+    });
+});
+
+test('throws on invalid data structures', function (assert) {
+    var fs = createFs();
+    var counter = 0;
+
+    assert.throws(function () {
+        createFixtures(__dirname, {
+            foo: 42
+        }, fs, function () {
+            counter++;
+        });
+    }, /value not supported 42/);
+
+    assert.equal(counter, 0);
+
+    assert.end();
+});
