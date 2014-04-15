@@ -15,52 +15,41 @@ Create a temporary fs with JSON fixtures
 ## Example
 
 ```js
-var fixturesFs = require("fixtures-fs");
+var withFixtures = require("fixtures-fs");
+var test = require('tape')
 
-/* withFixtures takes a hash of file fixtures and a task to
-    execute.
+/*
+  this test wants a directory set up with some mock data
+  then do asserts against the directory with some code.
 
-    It then ensures the fixtures exists in the file system,
-        runs the task and then removes the fixtures.
-
-    When it's done with the task it will call the callback.
-
-    ```js
-    var test = require('mocha').test;
-    var assert = require('assert');
-    var configChain = require('config-chain');
-
-    test('run some test', withFixtures(__dirname, {
-        json: {
-            'config.json': '{ "port": 3000, "awesome": true }',
-            'test.json': '{ "port": 4000 }'
-        }
-    }, function (end) {
-        var config = configChain(
-            './json/' + process.env.NODE_ENV + '.json',
-            './json/config.json'
-        );
-
-        assert.equal(config.port, 4000);
-        assert.equal(config.awesome, true);
-
-        end();
-    }));
-    ```
-
-    `withFixtures` is very useful to use with writing integration
-        tests. It allows you to declare a file system as a simple
-        object and then run a test case against it knowing that
-        it will be cleaned up after the test case finishes.
-
-    Notice the usage of the `__dirname` to tell `withFixtures`
-        where the folders are local to. In this case the dirname
-        of the test file, but it can be set to `process.cwd()` or
-        `os.tmpDir()` or whatever location you want.
-
+  withFixtures creates the file system before your test and 
+  tears it down after your test is done.
 */
+test('something something npm', withFixtures(__dirname, {
+  'foo': {
+    'package.json': JSON.stringify({
+      name: 'foo',
+      version: 'bar',
+      dependecies: { 'foobaz': '~1.0.0' }
+    }),
+    'npm-shrinkwrap.json': JSON.stringify({
+      name: 'foo',
+      version: 'bar',
+      dependencies: {
+        'foobaz': {
+          version: '3.0.0',
+          resolved: 'http://npm.registry.org/foobaz/foobaz-3.0.0.tgz'
+        }
+      }
+    })
+  }
+}, function (assert) {
+  myNpmVerify(path.join(__dirname, 'foo'), function (err) {
+    assert.equal(err.message, 'shrinkwrap is wrong.')
 
-// TODO. Show example
+    assert.end()
+  })
+}))
 ```
 
 ## Docs
