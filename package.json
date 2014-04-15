@@ -22,7 +22,6 @@
     "istanbul": "^0.2.7",
     "jshint": "^2.5.0",
     "pre-commit": "0.0.5",
-    "run-browser": "Raynos/run-browser#v1.2.0-phantom",
     "tap-spec": "^0.1.8",
     "tape": "^2.12.3"
   },
@@ -38,9 +37,7 @@
     "jshint-pre-commit": "jshint --verbose $(git diff --cached --name-only | grep '\\.js$')",
     "jshint": "jshint --verbose .",
     "cover": "istanbul cover --report none --print detail test/index.js",
-    "view-cover": "istanbul report html && open ./coverage/index.html",
-    "browser": "run-browser test/index.js",
-    "phantom": "run-browser test/index.js -b"
+    "view-cover": "istanbul report html && open ./coverage/index.html"
   },
   "engine": {
     "node": ">= 0.8.x"
