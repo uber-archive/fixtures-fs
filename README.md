@@ -168,13 +168,13 @@ When you call `func` with either a callback or object with an
 
 ## MIT Licenced
 
-  [build-png]: https://secure.travis-ci.org/Uber/fixtures-fs.png
-  [build]: https://travis-ci.org/Uber/fixtures-fs
-  [cover-png]: https://coveralls.io/repos/Uber/fixtures-fs/badge.png
-  [cover]: https://coveralls.io/r/Uber/fixtures-fs
-  [dep-png]: https://david-dm.org/Uber/fixtures-fs.png
-  [dep]: https://david-dm.org/Uber/fixtures-fs
-  [npm-png]: https://ci.testling.com/Uber/fixtures-fs.png
-  [npm]: https://ci.testling.com/Uber/fixtures-fs
+  [build-png]: https://secure.travis-ci.org/uber/fixtures-fs.png
+  [build]: https://travis-ci.org/uber/fixtures-fs
+  [cover-png]: https://coveralls.io/repos/uber/fixtures-fs/badge.png
+  [cover]: https://coveralls.io/r/uber/fixtures-fs
+  [dep-png]: https://david-dm.org/uber/fixtures-fs.png
+  [dep]: https://david-dm.org/uber/fixtures-fs
+  [npm-png]: https://ci.testling.com/uber/fixtures-fs.png
+  [npm]: https://ci.testling.com/uber/fixtures-fs
   [test-png]: https://nodei.co/npm/fixtures-fs.png?stars&downloads
   [test]: https://nodei.co/npm/fixtures-fs
