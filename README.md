@@ -106,7 +106,7 @@ You can invoke the returned `thunk` with a callback or an object
 
 This is the directory the `fixtures` will be written into.
 
-If this directory does not exist it will be created.
+If this directory does not exist, it will be created.
 
 #### `fixtures`
 
