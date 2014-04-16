@@ -1,14 +1,8 @@
 # fixtures-fs
 
-[![build status][build-png]][build]
-<!--
-    [![Coverage Status][cover-png]][cover]
-    [![Davis Dependency status][dep-png]][dep]
--->
+[![build status][build-png]][build] [![Coverage Status][cover-png]][cover] [![Davis Dependency status][dep-png]][dep]
 
-<!-- [![NPM][npm-png]][npm] -->
-
-<!-- [![browser support][test-png]][test] -->
+[![NPM][npm-png]][npm]
 
 Create a temporary fs with JSON fixtures
 
@@ -174,7 +168,5 @@ When you call `func` with either a callback or object with an
   [cover]: https://coveralls.io/r/uber/fixtures-fs
   [dep-png]: https://david-dm.org/uber/fixtures-fs.png
   [dep]: https://david-dm.org/uber/fixtures-fs
-  [npm-png]: https://ci.testling.com/uber/fixtures-fs.png
-  [npm]: https://ci.testling.com/uber/fixtures-fs
-  [test-png]: https://nodei.co/npm/fixtures-fs.png?stars&downloads
-  [test]: https://nodei.co/npm/fixtures-fs
+  [npm-png]: https://nodei.co/npm/fixtures-fs.png?stars&downloads
+  [npm]: https://nodei.co/npm/fixtures-fs
