@@ -15,9 +15,9 @@ Create a temporary fs with JSON fixtures
 ## Example
 
 ```js
-var withFixtures = require("fixtures-fs");
-var test = require("tape")
-var path = require("path")
+var withFixtures = require('fixtures-fs');
+var test = require('tape');
+var path = require('path');
 
 var myNpmVerify = ...
 
@@ -29,17 +29,17 @@ var myNpmVerify = ...
   tears it down after your test is done.
 */
 test('something something npm', withFixtures(__dirname, {
-  'foo': {
+  foo: {
     'package.json': JSON.stringify({
       name: 'foo',
       version: 'bar',
-      dependecies: { 'foobaz': '~1.0.0' }
+      dependecies: { foobaz: '~1.0.0' }
     }),
     'npm-shrinkwrap.json': JSON.stringify({
       name: 'foo',
       version: 'bar',
       dependencies: {
-        'foobaz': {
+        foobaz: {
           version: '3.0.0',
           resolved: 'http://npm.registry.org/foobaz/foobaz-3.0.0.tgz'
         }
@@ -48,35 +48,35 @@ test('something something npm', withFixtures(__dirname, {
   }
 }, function (assert) {
   myNpmVerify(path.join(__dirname, 'foo'), function (err) {
-    assert.equal(err.message, 'shrinkwrap is wrong.')
+    assert.equal(err.message, 'shrinkwrap is wrong.');
 
-    assert.end()
-  })
-}))
+    assert.end();
+  });
+}));
 ```
 
 ### example with mocha
 
 ```js
-var withFixtures = require("fixtures-fs")
-var suite = require("mocha").suite
-var test = require("mocha").it
-var assert = require("assert")
-var path = require("path")
+var withFixtures = require('fixtures-fs');
+var suite = require('mocha').suite;
+var test = require('mocha').it;
+var assert = require('assert');
+var path = require('path');
 
 var myNpmVerify = ...
 
-suite("test npm stuff", function () {
-  test("something something npm", withFixtures(__dirname, {
+suite('test npm stuff', function () {
+  test('something something npm', withFixtures(__dirname, {
     ...
   }, function (end) {
     myNpmVerify(path.join(__dirname, 'foo'), function (err) {
-      assert.equal(err.message, 'shrinkwrap is wrong.')
+      assert.equal(err.message, 'shrinkwrap is wrong.');
 
-      end()
-    })
-  }))
-})
+      end();
+    });
+  }));
+});
 ```
 
 ## Docs
