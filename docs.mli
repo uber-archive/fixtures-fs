@@ -28,18 +28,9 @@ fixtures-fs/teardown-fixtures := (
     callback: Callback<Error>
 ) => void
 
-fixtures-fs :=
-    (
-        dirname: String,
-        fixtures: Fixture, 
-        lambda: (EndCallback<T>) => void,
-        opts?: FsMock,
-        task: EndCallback<T>
-    ) => void &
-    (
-        dirname: String,
-        fixtures: Fixture, 
-        lambda: (EndCallback<T>) => void,
-        opts?: FsMock
-    ) => (EndCallback<T>) => void
-    
+fixtures-fs := (
+    dirname: String,
+    fixtures: Fixture, 
+    lambda: (EndCallback<T>) => void,
+    opts?: FsMock
+) => (EndCallback<T>) => void

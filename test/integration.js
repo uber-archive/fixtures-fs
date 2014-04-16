@@ -27,7 +27,7 @@ test('create temporary file system', function (assert) {
         assert.equal(fs.existsSync(BAZ_PATH), true);
 
         process.nextTick(callback);
-    }, function (err) {
+    })(function (err) {
         assert.ifError(err);
 
         assert.equal(fs.existsSync(FOO_PATH), false);

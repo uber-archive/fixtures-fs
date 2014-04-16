@@ -56,7 +56,7 @@ test('create temporary file system', function (assert) {
         assert.equal(fs.existsSync(BAZ_PATH), true);
 
         process.nextTick(callback);
-    }, fs, function (err) {
+    }, fs)(function (err) {
         assert.ifError(err);
 
         assert.equal(fs.existsSync(FOO_PATH), false);
@@ -82,7 +82,7 @@ test('createFixtures errors bubbles', function (assert) {
         counter++;
 
         process.nextTick(callback);
-    }, fs, function (err) {
+    }, fs)(function (err) {
         assert.ok(err);
 
         assert.equal(counter, 0);
@@ -104,7 +104,7 @@ test('teardownFixtures errors bubbles', function (assert) {
         fs.unlinkSync(FOO_PATH);
 
         process.nextTick(callback);
-    }, fs, function (err) {
+    }, fs)(function (err) {
         assert.ok(err);
 
         assert.equal(err.code, 'ENOENT');
@@ -127,7 +127,7 @@ test('task errors bubble', function (assert) {
         assert.equal(fs.existsSync(BAZ_PATH), true);
 
         process.nextTick(callback.bind(null, new Error('foo')));
-    }, fs, function (err) {
+    }, fs)(function (err) {
         assert.ok(err);
 
         assert.equal(err.message, 'foo');
@@ -195,7 +195,7 @@ test('task can be assert.end interface', function (assert) {
         assert.equal(typeof assertLike, 'object');
 
         process.nextTick(assertLike.end.bind(null, null, 42));
-    }, fs, assertLike);
+    }, fs)(assertLike);
 });
 
 test('can pass through values', function (assert) {
@@ -208,7 +208,7 @@ test('can pass through values', function (assert) {
         }
     }, function (callback) {
         process.nextTick(callback.bind(null, null, 42));
-    }, fs, function (err, value) {
+    }, fs)(function (err, value) {
         assert.ifError(err);
 
         assert.equal(value, 42);
