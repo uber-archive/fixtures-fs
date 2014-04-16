@@ -81,7 +81,7 @@ suite('test npm stuff', function () {
 
 ## Docs
 
-### `var thunk = withFixtures(dirname, fixtures, lambda, opts={})`
+### `var func = withFixtures(dirname, fixtures, lambda, opts={})`
 
 ```ocaml
 fixtures-fs := (
@@ -99,7 +99,7 @@ It will run create a file system matching your `fixtures`
   before calling your async `lambda` function and tear down
   the file system once the `lambda` finishes.
 
-You can invoke the returned `thunk` with a callback or an object
+You can invoke the returned `func` with a callback or an object
  with an `.end()` method.
 
 #### `dirname`
@@ -143,13 +143,13 @@ You can pass an optional `opts` object to customize the file
   system like a browser file system, a remote file system or
   an in memory file system.
 
-#### `thunk`
+#### `func`
 
-The `thunk` result of the `withFixtures()` call can be passed
+The `func` result of the `withFixtures()` call can be passed
   directly into the `test()` function of `tape` or the `test()`
   function of `mocha`.
 
-When you call `thunk` with either a callback or object with an
+When you call `func` with either a callback or object with an
   `.end()` method argument it will create the fixtures, invoke
   the `lambda`, tear down the fixtures and then invoke either
   the callback or `.end()` method.
