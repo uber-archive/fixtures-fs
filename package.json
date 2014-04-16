@@ -23,7 +23,8 @@
     "jshint": "^2.5.0",
     "pre-commit": "0.0.5",
     "tap-spec": "^0.1.8",
-    "tape": "^2.12.3"
+    "tape": "^2.12.3",
+    "coveralls": "^2.10.0"
   },
   "licenses": [
     {
@@ -37,6 +38,7 @@
     "jshint-pre-commit": "jshint --verbose $(git diff --cached --name-only | grep '\\.js$')",
     "jshint": "jshint --verbose .",
     "cover": "istanbul cover --report none --print detail test/index.js",
+    "travis": "npm run cover -s && ((cat coverage/lcov.info | coveralls) || exit 0)",
     "view-cover": "istanbul report html && open ./coverage/index.html"
   },
   "engine": {
