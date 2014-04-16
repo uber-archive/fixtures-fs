@@ -5,6 +5,10 @@ var series = require('continuable-series');
 var globalMkdirp = require('mkdirp');
 var format = require('util').format;
 
+var message = '`fixtures-fs#createFixtures` expected key %s ' +
+    'to have value that is a string or object but we ' +
+    'received %j.';
+
 function createFixtures(dirname, fixtures, opts, callback) {
     if (typeof opts === 'function') {
         callback = opts;
@@ -25,7 +29,7 @@ function createFixtures(dirname, fixtures, opts, callback) {
                 createFixtures.bind(null, loc, value, opts)
             ]);
         } else {
-            var msg = format('value not supported %j', value);
+            var msg = format(message, key, value);
             throw new Error(msg);
         }
     });

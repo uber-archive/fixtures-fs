@@ -155,7 +155,7 @@ test('throws on invalid data structures', function (assert) {
         }, fs, function () {
             counter++;
         });
-    }, /value not supported 42/);
+    }, /we received 42/);
 
     assert.equal(counter, 0);
 

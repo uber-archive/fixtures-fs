@@ -5,6 +5,10 @@ var series = require('continuable-series');
 var globalRimRaf = require('rimraf');
 var format = require('util').format;
 
+var message = '`fixtures-fs#teardownFixtures` expected key %s ' +
+    'to have value that is a string or object but we ' +
+    'received %j.';
+
 function teardownFixtures(dirname, fixtures, opts, callback) {
     if (typeof opts === 'function') {
         callback = opts;
@@ -26,7 +30,7 @@ function teardownFixtures(dirname, fixtures, opts, callback) {
                 rimraf.bind(null, loc)
             ]);
         } else {
-            var msg = format('value not supported %j', value);
+            var msg = format(message, key, value);
             throw new Error(msg);
         }
     });
