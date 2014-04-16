@@ -12,28 +12,32 @@
     "email": "raynos2@gmail.com"
   },
   "dependencies": {
+    "continuable-para": "^1.2.0",
+    "continuable-series": "^1.2.0",
+    "mkdirp": "^0.3.5",
+    "rimraf": "^2.2.6"
   },
   "devDependencies": {
-    "tape": "^2.12.3",
-    "jshint": "^2.5.0",
+    "fake-fs": "^0.2.1",
     "istanbul": "^0.2.7",
-    "tap-spec": "^0.1.8",
+    "jshint": "^2.5.0",
     "pre-commit": "0.0.5",
-    "run-browser": "Raynos/run-browser#v1.2.0-phantom"
+    "tap-spec": "^0.1.8",
+    "tape": "^2.12.3"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url": "http://github.com/uber/fixtures-fs/raw/master/LICENSE"
-  }],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/uber/fixtures-fs/raw/master/LICENSE"
+    }
+  ],
   "scripts": {
-    "test": "npm run jshint --silent && npm run unit-test --silent",
-    "unit-test": "NODE_ENV=test node test/index.js | tap-spec",
+    "test": "npm run jshint --silent && NODE_ENV=test node test/index.js | tap-spec",
+    "unit-test": "NODE_ENV=test node test/unit.js | tap-spec",
     "jshint-pre-commit": "jshint --verbose $(git diff --cached --name-only | grep '\\.js$')",
     "jshint": "jshint --verbose .",
     "cover": "istanbul cover --report none --print detail test/index.js",
-    "view-cover": "istanbul report html && open ./coverage/index.html",
-    "browser": "run-browser test/index.js",
-    "phantom": "run-browser test/index.js -b"
+    "view-cover": "istanbul report html && open ./coverage/index.html"
   },
   "engine": {
     "node": ">= 0.8.x"
