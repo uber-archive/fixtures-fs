@@ -1,7 +1,7 @@
 # fixtures-fs
 
+[![build status][build-png]][build]
 <!--
-    [![build status][build-png]][build]
     [![Coverage Status][cover-png]][cover]
     [![Davis Dependency status][dep-png]][dep]
 -->
