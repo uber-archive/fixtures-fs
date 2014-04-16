@@ -2,6 +2,10 @@
 var createFixtures = require('./create-fixtures');
 var teardownFixtures = require('./teardown-fixtures');
 
+/*  to support common testing libraries we accept either a
+    a callback function or an assert like object with an `end()`
+    method on it. 
+*/
 function isTask(maybeTask) {
     return typeof maybeTask === 'function' || (
         typeof maybeTask === 'object' && maybeTask !== null &&
