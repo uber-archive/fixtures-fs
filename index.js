@@ -33,7 +33,8 @@ function withFixtures(dirname, fixtures, lambda, opts) {
     function thunk(task) {
         function onFixtures(err) {
             if (err) {
-                return task(err);
+                return typeof task === 'function' ? 
+                    task(err) : task.end(err);
             }
 
             var thunk = teardownFixtures.bind(null,
