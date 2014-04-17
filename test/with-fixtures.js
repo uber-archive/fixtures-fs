@@ -92,6 +92,37 @@ test('createFixtures errors bubbles', function (assert) {
     });
 });
 
+test('createFixtures errors bubbles (assert)', function (assert) {
+    var fs = createFs();
+    var counter = 0;
+
+    fs.dir(BAR_PATH);
+
+    var assertLike = {
+        end: function (err) {
+            assert.ok(err);
+
+            assert.equal(counter, 0);
+            assert.equal(err.code, 'EEXIST');
+
+            assert.end();
+        }
+    };
+
+    var thunk = withFixtures(__dirname, {
+        'foo': 'bar',
+        'bar': {
+            'baz': 'foobar'
+        }
+    }, function (callback) {
+        counter++;
+
+        process.nextTick(callback);
+    }, fs);
+
+    thunk(assertLike);
+});
+
 test('teardownFixtures errors bubbles', function (assert) {
     var fs = createFs();
 
