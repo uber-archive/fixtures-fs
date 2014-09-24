@@ -1,6 +1,6 @@
 {
   "name": "fixtures-fs",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Create a temporary fs with JSON fixtures",
   "keywords": [],
   "author": "Raynos <raynos2@gmail.com>",
