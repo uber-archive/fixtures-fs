@@ -71,7 +71,11 @@ test('createFixtures errors bubbles', function (assert) {
     var fs = createFs();
     var counter = 0;
 
-    fs.dir(BAR_PATH);
+    fs.mkdir = function (dir, cb) {
+        var err = new Error('EEXIST');
+        err.code = 'EEXIST';
+        cb(err);
+    };
 
     withFixtures(__dirname, {
         'foo': 'bar',
@@ -96,7 +100,11 @@ test('createFixtures errors bubbles (assert)', function (assert) {
     var fs = createFs();
     var counter = 0;
 
-    fs.dir(BAR_PATH);
+    fs.mkdir = function (dir, cb) {
+        var err = new Error('EEXIST');
+        err.code = 'EEXIST';
+        cb(err);
+    };
 
     var assertLike = {
         end: function (err) {
@@ -132,7 +140,11 @@ test('teardownFixtures errors bubbles', function (assert) {
             'baz': 'foobar'
         }
     }, function (callback) {
-        fs.unlinkSync(FOO_PATH);
+        fs.rimraf = function (loc, cb) {
+            var err = new Error('ENOENT');
+            err.code = 'ENOENT';
+            cb(err);
+        };
 
         process.nextTick(callback);
     }, fs)(function (err) {
@@ -143,6 +155,66 @@ test('teardownFixtures errors bubbles', function (assert) {
         assert.end();
     });
 });
+
+test('pre-emptive teardownFixtures errors bubbles', function (assert) {
+    var fs = createFs();
+
+    fs.rimraf = function (loc, cb) {
+        var err = new Error('ENOENT');
+        err.code = 'ENOENT';
+        cb(err);
+    };
+
+    withFixtures(__dirname, {
+        'foo': 'bar',
+        'bar': {
+            'baz': 'foobar'
+        }
+    }, function (callback) {
+        process.nextTick(callback);
+    }, fs)(function (err) {
+        assert.ok(err);
+
+        assert.equal(err.code, 'ENOENT');
+
+        assert.end();
+    });
+});
+
+test('pre-emptive (assert) teardownFixtures errors bubbles',
+    function (assert) {
+        var fs = createFs();
+
+        fs.rimraf = function (loc, cb) {
+            var err = new Error('ENOENT');
+            err.code = 'ENOENT';
+            cb(err);
+        };
+
+        var counter = 0;
+        var assertLike = {
+            end: function (err) {
+                assert.ok(err);
+
+                assert.equal(counter, 0);
+                assert.equal(err.code, 'ENOENT');
+                
+                assert.end();
+            }
+        };
+
+        withFixtures(__dirname, {
+            'foo': 'bar',
+            'bar': {
+                'baz': 'foobar'
+            }
+        }, function (callback) {
+            counter++;
+
+            process.nextTick(callback);
+        }, fs)(assertLike);
+    });
+
 
 test('task errors bubble', function (assert) {
     var fs = createFs();
@@ -266,6 +338,43 @@ test('withFixtures returns thunks', function (assert) {
         assert.ifError(err);
 
         assert.equal(value, 42);
+
+        assert.end();
+    });
+});
+
+test('works even if files exists', function t(assert) {
+    var fs = createFs();
+
+    assert.equal(fs.existsSync(FOO_PATH), false);
+    assert.equal(fs.existsSync(BAR_PATH), false);
+    assert.equal(fs.existsSync(BAZ_PATH), false);
+
+    fs.file(FOO_PATH, 'bar');
+    fs.dir(BAR_PATH);
+    fs.file(BAZ_PATH, 'foobar');
+
+    assert.equal(fs.existsSync(FOO_PATH), true);
+    assert.equal(fs.existsSync(BAR_PATH), true);
+    assert.equal(fs.existsSync(BAZ_PATH), true);
+
+    withFixtures(__dirname, {
+        'foo': 'bar',
+        'bar': {
+            'baz': 'foobar'
+        }
+    }, function (callback) {
+        assert.equal(fs.existsSync(FOO_PATH), true);
+        assert.equal(fs.existsSync(BAR_PATH), true);
+        assert.equal(fs.existsSync(BAZ_PATH), true);
+
+        process.nextTick(callback);
+    }, fs)(function (err) {
+        assert.ifError(err);
+
+        assert.equal(fs.existsSync(FOO_PATH), false);
+        assert.equal(fs.existsSync(BAR_PATH), false);
+        assert.equal(fs.existsSync(BAZ_PATH), false);
 
         assert.end();
     });

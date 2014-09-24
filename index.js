@@ -30,6 +30,9 @@ function interceptTask(task, asyncTeardown) {
 function withFixtures(dirname, fixtures, lambda, opts) {
     opts = opts || {};
 
+    var teardownThunk = teardownFixtures.bind(null,
+        dirname, fixtures, opts);
+
     function thunk(task) {
         function onFixtures(err) {
             if (err) {
@@ -39,13 +42,22 @@ function withFixtures(dirname, fixtures, lambda, opts) {
                     task(err) : task.end(err);
             }
 
-            var thunk = teardownFixtures.bind(null,
-                dirname, fixtures, opts);
-
-            lambda(interceptTask(task, thunk));
+            lambda(interceptTask(task, teardownThunk));
         }
 
-        createFixtures(dirname, fixtures, opts, onFixtures);
+        
+        function onTeardown(err) {
+            if (err) {
+                return typeof task === 'function' ?
+                    task(err) : task.end(err);
+            }
+
+            createFixtures(dirname, fixtures, opts, onFixtures);
+        }
+
+        // pre-emptive teardown, in case the previous fixture
+        // still exists.
+        teardownThunk(onTeardown);
     }
 
     return thunk;
