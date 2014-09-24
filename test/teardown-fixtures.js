@@ -125,26 +125,6 @@ test('cleanups other files', function (assert) {
     });
 });
 
-test('errors if file does not exist', function (assert) {
-    var fs = createFs();
-    fs.file(BAZ_PATH, 'foobar');
-    fs.file(GIT_PATH, 'some git stuff');
-
-    teardownFixtures(__dirname, {
-        'foo': 'bar',
-        'bar': {
-            'baz': 'foobar'
-        }
-    }, fs, function (err) {
-        assert.ok(err);
-
-        assert.equal(err.code, 'ENOENT');
-
-        assert.end();
-    });
-});
-
-
 test('throws on invalid data structures', function (assert) {
     var fs = createFs();
     var counter = 0;

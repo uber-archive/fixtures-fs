@@ -18,13 +18,14 @@
     "rimraf": "^2.2.6"
   },
   "devDependencies": {
+    "coveralls": "^2.10.0",
     "fake-fs": "^0.2.1",
     "istanbul": "^0.2.7",
     "jshint": "^2.5.0",
+    "opn": "^1.0.0",
     "pre-commit": "0.0.5",
     "tap-spec": "^0.1.8",
-    "tape": "^2.12.3",
-    "coveralls": "^2.10.0"
+    "tape": "^3.0.0"
   },
   "licenses": [
     {
@@ -39,7 +40,7 @@
     "jshint": "jshint --verbose .",
     "cover": "istanbul cover --report none --print detail test/index.js",
     "travis": "npm run cover -s && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0)",
-    "view-cover": "istanbul report html && open ./coverage/index.html"
+    "view-cover": "istanbul report html && opn ./coverage/index.html"
   },
   "engine": {
     "node": ">= 0.8.x"

@@ -9,6 +9,16 @@ var message = '`fixtures-fs#teardownFixtures` expected key %s ' +
     'to have value that is a string or object but we ' +
     'received %j.';
 
+function forceUnlink(fs, loc, cb) {
+    fs.unlink(loc, onUnlink);
+
+    // ignore all errors, if we could not remove files then
+    // that's ok.
+    function onUnlink() {
+        cb();
+    }
+}
+
 function teardownFixtures(dirname, fixtures, opts, callback) {
     if (typeof opts === 'function') {
         callback = opts;
@@ -23,7 +33,7 @@ function teardownFixtures(dirname, fixtures, opts, callback) {
         var loc = path.join(dirname, key);
 
         if (typeof value === 'string') {
-            return fs.unlink.bind(fs, loc);
+            return forceUnlink.bind(null, fs, loc);
         } else if (typeof value === 'object') {
             return series([
                 teardownFixtures.bind(null, loc, value, opts),
